@@ -22,7 +22,8 @@ func main() {
 
 	router := httprouter.New()
 
-	router.GET("/", app.ShowHome)
+	router.GET("/home", app.ShowHome)
+	router.GET("/about", app.ShowAbout)
 
 	err := http.ListenAndServe(":8080", router)
 	if err != nil {
