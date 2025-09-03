@@ -7,11 +7,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-type Data struct {
-	Author string
-}
-
-func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (app *Application) ShowAbout(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	tmpl, err := template.ParseFiles(
 		"ui/html/layout.tmpl",
 		"ui/html/content.tmpl",
@@ -25,12 +21,6 @@ func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httpr
 		app.ErrLog.Fatal(err)
 	}
 
-	data := &Data{
-		Author: "liuzihao",
-	}
+	err = tmpl.Execute(w, "")
 
-	err = tmpl.Execute(w, data)
-	if err != nil {
-		app.ErrLog.Fatal(err)
-	}
 }
