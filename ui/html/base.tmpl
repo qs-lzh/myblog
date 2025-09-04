@@ -20,13 +20,17 @@
         </div>
 
         <nav class="hidden md:flex space-x-8">
-          <a href="/home" class="hover:text-gray-200">首页</a>
+          <a href="/home" class="hover:text-gray-200">Home</a>
         </nav>
       </div>
     </div>
   </header>
 
   <main class="container">
+    {{with .Flash}}
+      <div class="flash">{{.}}</div>
+    {{end}}
+
     {{template "content" .}}
   </main>
 

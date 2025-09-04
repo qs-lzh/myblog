@@ -6,19 +6,25 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
+	"github.com/alexedwards/scs/v2"
+
+	"github.com/qs-lzh/myblog/internal/data"
 	"github.com/qs-lzh/myblog/internal/errors"
 	"github.com/qs-lzh/myblog/internal/logger"
 )
 
 type Application struct {
-	Logger       *logger.Logger
-	ErrorHandler *errors.ErrorHandler
-	Data         *Data
+	Logger         *logger.Logger
+	ErrorHandler   *errors.ErrorHandler
+	Data           *Data
+	SessionManager *scs.SessionManager
 }
 
 type Data struct {
 	Author string
+	Flash  string
 }
 
 func (app *Application) render(w http.ResponseWriter, r *http.Request, page string, data any) {
@@ -52,4 +58,11 @@ func (app *Application) render(w http.ResponseWriter, r *http.Request, page stri
 	}
 
 	app.Logger.LogPageRender(page)
+}
+
+func (app *Application) NewTemplateData(r *http.Request) *data.TemplateData {
+	return &data.TemplateData{
+		Time:  time.Now(),
+		Flash: app.SessionManager.PopString(r.Context(), "flash"),
+	}
 }
