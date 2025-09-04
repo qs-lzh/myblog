@@ -7,14 +7,16 @@ import (
 
 	"github.com/qs-lzh/myblog/internal/app"
 	"github.com/qs-lzh/myblog/internal/errors"
+	"github.com/qs-lzh/myblog/internal/logger"
 )
 
 func main() {
-
-	errorHandler := errors.NewErrorHandler()
+	logger := logger.NewLogger()
+	errorHandler := errors.NewErrorHandler(logger)
 
 	app := &app.Application{
-		ErrorHandler: *errorHandler,
+		Logger:       logger,
+		ErrorHandler: errorHandler,
 	}
 
 	router := httprouter.New()
@@ -26,6 +28,6 @@ func main() {
 
 	err := http.ListenAndServe(":8080", router)
 	if err != nil {
-		app.ErrorHandler.ErrLog.Fatal(err)
+		app.ErrorHandler.Logger.ErrLog.Fatal()
 	}
 }

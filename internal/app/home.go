@@ -11,6 +11,8 @@ type Data struct {
 }
 
 func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	app.Logger.LogRequest(r)
+
 	page := "home"
 	data := &Data{
 		Author: "qs-lzh",

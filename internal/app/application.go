@@ -8,10 +8,12 @@ import (
 	"path/filepath"
 
 	"github.com/qs-lzh/myblog/internal/errors"
+	"github.com/qs-lzh/myblog/internal/logger"
 )
 
 type Application struct {
-	ErrorHandler errors.ErrorHandler
+	Logger       *logger.Logger
+	ErrorHandler *errors.ErrorHandler
 }
 
 func (app *Application) render(w http.ResponseWriter, r *http.Request, page string, data any) {
@@ -43,4 +45,6 @@ func (app *Application) render(w http.ResponseWriter, r *http.Request, page stri
 		app.ErrorHandler.ServerError(w, err, "failed to execute template")
 		return
 	}
+
+	app.Logger.LogPageRender(page)
 }

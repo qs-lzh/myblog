@@ -7,6 +7,8 @@ import (
 )
 
 func (app *Application) ShowAbout(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	app.Logger.LogRequest(r)
+
 	page := "about"
 	data := &Data{
 		Author: "liuzihao",

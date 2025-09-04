@@ -1,35 +1,34 @@
 package errors
 
 import (
-	"log"
+	"fmt"
 	"net/http"
-	"os"
+
+	"github.com/qs-lzh/myblog/internal/logger"
 )
 
 type ErrorHandler struct {
-	infoLog *log.Logger
-	ErrLog  *log.Logger
+	Logger *logger.Logger
 }
 
-func NewErrorHandler() *ErrorHandler {
+func NewErrorHandler(l *logger.Logger) *ErrorHandler {
 	return &ErrorHandler{
-		infoLog: log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime),
-		ErrLog:  log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile),
+		Logger: l,
 	}
 }
 
 func (h *ErrorHandler) ServerError(w http.ResponseWriter, err error, msg string) {
-	h.ErrLog.Printf("Server Error - %s: %v", msg, err)
+	h.Logger.Error(fmt.Sprintf("Server Error - %s: %v", msg, err))
 	http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 }
 
 func (h *ErrorHandler) ClientError(w http.ResponseWriter, statusCode int, msg string) {
-	h.ErrLog.Printf("Client Error - (%d): %s", statusCode, msg)
+	h.Logger.Error(fmt.Sprintf("Client Error - (%d): %s", statusCode, msg))
 	http.Error(w, "Client Error", statusCode)
 }
 
 /*
-  You should NEVER use ClientError() UNLESS the specialized errors below doesn't satisfy your need
+  You should NEVER use ClientError() UNLESS the specialized errors doesn't satisfy your need
 */
 
 func (h *ErrorHandler) NotFound(w http.ResponseWriter, msg string) {
