@@ -22,7 +22,6 @@ func main() {
 	router := httprouter.New()
 
 	router.GET("/home", app.ShowHome)
-	router.GET("/about", app.ShowAbout)
 
 	router.ServeFiles("/static/*filepath", http.Dir("./static"))
 

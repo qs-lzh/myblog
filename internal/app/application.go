@@ -14,6 +14,11 @@ import (
 type Application struct {
 	Logger       *logger.Logger
 	ErrorHandler *errors.ErrorHandler
+	Data         *Data
+}
+
+type Data struct {
+	Author string
 }
 
 func (app *Application) render(w http.ResponseWriter, r *http.Request, page string, data any) {

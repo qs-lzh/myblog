@@ -6,16 +6,12 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-type Data struct {
-	Author string
-}
-
 func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	app.Logger.LogRequest(r)
 
 	page := "home"
 	data := &Data{
-		Author: "qs-lzh",
+		Author: "liuzihao",
 	}
 	app.render(w, r, page, data)
 }
