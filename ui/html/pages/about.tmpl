@@ -1,17 +1,15 @@
 {{define "content"}}
-<p>This is about page-----------------</p>
 <main class="flex-grow bg-gray-100 p-8">
     <div class="max-w-4xl mx-auto">
       <!-- Title -->
-      <h1 class="text-4xl font-bold text-blue-600 mb-6">网页标题</h1>
+      <h1 class="text-4xl font-bold text-blue-600 mb-6">About</h1>
       
-      <!-- 内容段落 -->
       <p class="text-red-700 mb-4">
-        The Author is: {{.Author}}
+        Author: {{.Author}}
       </p>
-      <p class="text-gray-700">
-        Tailwind CSS 可以让你快速布局和美化网页，而无需写大量自定义 CSS。
-      </p>
+      <img src="/static/images/myphoto.png" class="w-24">
+      <br>
+      <a href="https://github.com/qs-lzh" class="font-bold text-blue-600">Github</a>
     </div>
   </main>
 {{end}}

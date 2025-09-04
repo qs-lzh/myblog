@@ -13,7 +13,7 @@ type Data struct {
 func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	page := "home"
 	data := &Data{
-		Author: "liuzihao",
+		Author: "qs-lzh",
 	}
-	app.render(w, r, page, data)
+	err := app.render(w, r, page, data)
 }
