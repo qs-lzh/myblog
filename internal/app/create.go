@@ -13,7 +13,7 @@ func (app *Application) Create(w http.ResponseWriter, r *http.Request, _ httprou
 	app.Logger.LogRequest(r)
 
 	data := &Data{}
-	app.render(w, r, "create", data)
+	app.render(w, "create", data)
 
 	app.Logger.LogRequest(r)
 }
@@ -37,7 +37,7 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	if !createForm.Valid() {
 		app.SessionManager.Put(r.Context(), "flash", "form input wront!")
 		data := app.NewTemplateData(r)
-		app.render(w, r, "create", data)
+		app.render(w, "create", data)
 	}
 
 	http.Redirect(w, r, "/home", http.StatusSeeOther)

@@ -13,5 +13,5 @@ func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httpr
 	data := &Data{
 		Author: "liuzihao",
 	}
-	app.render(w, r, page, data)
+	app.render(w, page, data)
 }

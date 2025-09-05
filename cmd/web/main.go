@@ -32,8 +32,13 @@ func main() {
 
 	router.ServeFiles("/static/*filepath", http.Dir("./static"))
 
-	err := http.ListenAndServe(":8080", router)
+	srv := &http.Server{
+		Addr:    ":4000",
+		Handler: app.SessionManager.LoadAndSave(router),
+	}
+
+	err := srv.ListenAndServe()
 	if err != nil {
-		app.ErrorHandler.Logger.ErrLog.Fatal()
+		app.ErrorHandler.Logger.ErrLog.Fatal(err)
 	}
 }

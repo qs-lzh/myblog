@@ -27,7 +27,7 @@ type Data struct {
 	Flash  string
 }
 
-func (app *Application) render(w http.ResponseWriter, r *http.Request, page string, data any) {
+func (app *Application) render(w http.ResponseWriter, page string, data any) {
 	// 解析base.tmpl和partials/中的模版
 	templateSet, err := template.ParseFiles("./ui/html/base.tmpl")
 	if err != nil {
