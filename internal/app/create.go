@@ -51,6 +51,7 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 		app.ErrorHandler.ServerError(w, err, "failed to insert into database")
 	}
 	app.Logger.LogDBModify("Insert", "todos")
+	app.SessionManager.Put(r.Context(), "flash", "Todo created successfully!")
 
 	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }

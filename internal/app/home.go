@@ -10,8 +10,6 @@ func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httpr
 	app.Logger.LogRequest(r)
 
 	page := "home"
-	data := &Data{
-		Author: "liuzihao",
-	}
-	app.render(w, page, data)
+	tmpldata := app.NewTemplateData(r)
+	app.render(w, page, tmpldata)
 }
