@@ -2,9 +2,23 @@ package form
 
 import "strings"
 
+type ValidatorInterface interface {
+	Valid() bool
+	CheckField(fieldContent string, fieldName string, f ValidatorFunc, errMessage string)
+	AddFieldError(fieldName string, message string)
+	AddNonFieldError()
+}
+
 type Validator struct {
 	FieldErrors    map[string]string
 	NonFieldErrors []string
+}
+
+func NewValidator() *Validator {
+	return &Validator{
+		FieldErrors:    make(map[string]string),
+		NonFieldErrors: make([]string, 0),
+	}
 }
 
 func (v *Validator) Valid() bool {

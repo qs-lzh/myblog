@@ -12,7 +12,8 @@ func (app *Application) Create(w http.ResponseWriter, r *http.Request, _ httprou
 	// 后面考虑把所有handler开头和结尾的log写到middleware中
 	app.Logger.LogRequest(r)
 
-	data := &Data{}
+	data := app.NewTemplateData(r)
+	data.Form = form.NewCreateForm()
 	app.render(w, "create", data)
 
 	app.Logger.LogRequest(r)
@@ -33,14 +34,15 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	}
 
 	createForm.CheckField(createForm.Title, "title", createForm.NotBlank, "title field should not be blank!")
+	createForm.CheckField(createForm.Content, "content", createForm.NotBlank, "content field should not be blank!")
+
+	data := app.NewTemplateData(r)
+	data.Form = createForm
 
 	if !createForm.Valid() {
-		app.SessionManager.Put(r.Context(), "flash", "form input wront!")
-		data := app.NewTemplateData(r)
 		app.render(w, "create", data)
+		return
 	}
 
 	http.Redirect(w, r, "/home", http.StatusSeeOther)
-
-	app.Logger.LogRequest(r)
 }
