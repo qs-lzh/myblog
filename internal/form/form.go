@@ -1,6 +1,8 @@
 package form
 
-import ()
+import (
+	"time"
+)
 
 type FormInterface interface {
 	GetValidator() *Validator
@@ -9,6 +11,7 @@ type FormInterface interface {
 type CreateForm struct {
 	Title   string
 	Content string
+	DueDate time.Time
 	Validator
 }
 

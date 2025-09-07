@@ -2,6 +2,7 @@ package form
 
 import (
 	"strings"
+	"time"
 	"unicode/utf8"
 )
 
@@ -57,4 +58,8 @@ func (v *Validator) NotBlank(s string) bool {
 
 func (v *Validator) MaxLength(s string, maxLength int) bool {
 	return utf8.RuneCountInString(s) <= maxLength
+}
+
+func (v *Validator) AfterNow(t time.Time) bool {
+	return t.After(time.Now())
 }

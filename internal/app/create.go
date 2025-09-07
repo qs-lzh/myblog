@@ -2,11 +2,11 @@ package app
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/julienschmidt/httprouter"
 
 	"github.com/qs-lzh/myblog/internal/form"
+	"github.com/qs-lzh/myblog/internal/util"
 )
 
 func (app *Application) Create(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -32,11 +32,13 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	createForm := &form.CreateForm{
 		Title:   r.FormValue("title"),
 		Content: r.FormValue("content"),
+		DueDate: util.ParseDate(r.FormValue("date")),
 	}
 
 	createForm.CheckField(createForm.NotBlank(createForm.Title), "title", "title field should not be blank!")
-	createForm.CheckField(createForm.MaxLength(createForm.Title, 255), "title", "title field shoule be no more than 255 runes")
+	createForm.CheckField(createForm.MaxLength(createForm.Title, 255), "title", "title field shoule be no more than 255 runes!")
 	createForm.CheckField(createForm.NotBlank(createForm.Content), "content", "content field should not be blank!")
+	createForm.CheckField(createForm.AfterNow(createForm.DueDate), "date", "the due date should be later than now!")
 
 	data := app.NewTemplateData(r)
 	data.Form = createForm
@@ -46,12 +48,12 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 		return
 	}
 
-	err = app.TodoModel.Insert(createForm.Title, createForm.Content, time.Now())
+	err = app.TodoModel.Insert(createForm.Title, createForm.Content, createForm.DueDate)
 	if err != nil {
 		app.ErrorHandler.ServerError(w, err, "failed to insert into database")
 	}
 	app.Logger.LogDBModify("Insert", "todos")
 	app.SessionManager.Put(r.Context(), "flash", "Todo created successfully!")
 
-	http.Redirect(w, r, "/home", http.StatusSeeOther)
+	http.Redirect(w, r, "/create", http.StatusSeeOther)
 }
