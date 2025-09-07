@@ -29,7 +29,7 @@ func (model *TodoModel) Insert(title string, content string, dueDate time.Time) 
 
 func (model *TodoModel) GetAll() ([]*Todo, error) {
 	stmt := `
-	  select id, title, content, created_at due_date from todos
+	  select id, title, content, created_at, due_date from todos
 	`
 	rows, err := model.DB.Query(stmt)
 	if err != nil {
