@@ -6,6 +6,7 @@ import (
 )
 
 type Todo struct {
+	Id       int
 	Title    string
 	Content  string
 	CratedAt time.Time
@@ -24,4 +25,27 @@ func (model *TodoModel) Insert(title string, content string, dueDate time.Time) 
 	_, err := model.DB.Exec(stmt, title, content, dueDate)
 
 	return err
+}
+
+func (model *TodoModel) GetAll() ([]*Todo, error) {
+	stmt := `
+	  select id, title, content, created_at due_date from todos
+	`
+	rows, err := model.DB.Query(stmt)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var todos []*Todo
+	for rows.Next() {
+		todo := &Todo{}
+		err = rows.Scan(&todo.Id, &todo.Title, &todo.Content, &todo.CratedAt, &todo.DueDate)
+		if err != nil {
+			return nil, err
+		}
+		todos = append(todos, todo)
+	}
+
+	return todos, nil
 }
