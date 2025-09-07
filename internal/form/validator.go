@@ -1,6 +1,9 @@
 package form
 
-import "strings"
+import (
+	"strings"
+	"unicode/utf8"
+)
 
 type ValidatorInterface interface {
 	Valid() bool
@@ -27,8 +30,9 @@ func (v *Validator) Valid() bool {
 
 type ValidatorFunc func(string) bool
 
-func (v *Validator) CheckField(fieldContent string, fieldName string, f ValidatorFunc, errMessage string) {
-	if !f(fieldContent) {
+// if ok is false, then Validator.FieldErrors[fieldName] = errMessage
+func (v *Validator) CheckField(ok bool, fieldName string, errMessage string) {
+	if !ok {
 		v.AddFieldError(fieldName, errMessage)
 	}
 }
@@ -49,4 +53,8 @@ func (v *Validator) AddNonFieldError(message string) {
 
 func (v *Validator) NotBlank(s string) bool {
 	return !(len(strings.TrimSpace(s)) == 0)
+}
+
+func (v *Validator) MaxLength(s string, maxLength int) bool {
+	return utf8.RuneCountInString(s) <= maxLength
 }

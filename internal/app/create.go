@@ -34,8 +34,9 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 		Content: r.FormValue("content"),
 	}
 
-	createForm.CheckField(createForm.Title, "title", createForm.NotBlank, "title field should not be blank!")
-	createForm.CheckField(createForm.Content, "content", createForm.NotBlank, "content field should not be blank!")
+	createForm.CheckField(createForm.NotBlank(createForm.Title), "title", "title field should not be blank!")
+	createForm.CheckField(createForm.MaxLength(createForm.Title, 255), "title", "title field shoule be no more than 255 runes")
+	createForm.CheckField(createForm.NotBlank(createForm.Content), "content", "content field should not be blank!")
 
 	data := app.NewTemplateData(r)
 	data.Form = createForm
@@ -49,6 +50,7 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	if err != nil {
 		app.ErrorHandler.ServerError(w, err, "failed to insert into database")
 	}
+	app.Logger.LogDBModify("Insert", "todos")
 
 	http.Redirect(w, r, "/home", http.StatusSeeOther)
 }

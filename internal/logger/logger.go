@@ -31,7 +31,11 @@ func (l *Logger) LogServerStart(port string) {
 }
 
 func (l *Logger) LogPageRender(page string) {
-	l.InfoLog.Printf("page \"%s\" rendered successfully\n", page)
+	l.InfoLog.Printf("Render: page \"%s\" rendered successfully\n", page)
+}
+
+func (l *Logger) LogDBModify(action, table string) {
+	l.InfoLog.Printf("DB: %s action on \"%s\"\n", action, table)
 }
 
 func (l *Logger) Error(msg string) {
