@@ -9,6 +9,7 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 
+	"github.com/qs-lzh/myblog/internal/data"
 	"github.com/qs-lzh/myblog/internal/errors"
 	"github.com/qs-lzh/myblog/internal/logger"
 	"github.com/qs-lzh/myblog/internal/tmpldata"
@@ -17,8 +18,9 @@ import (
 type Application struct {
 	Logger         *logger.Logger
 	ErrorHandler   *errors.ErrorHandler
-	Data           *Data
+	Data           *tmpldata.TemplateData
 	SessionManager *scs.SessionManager
+	TodoModel      data.TodoModel
 }
 
 type Data struct {
@@ -76,8 +78,8 @@ func (app *Application) render(w http.ResponseWriter, page string, data any) {
 	app.Logger.LogPageRender(page)
 }
 
-func (app *Application) NewTemplateData(r *http.Request) *data.TemplateData {
-	return &data.TemplateData{
+func (app *Application) NewTemplateData(r *http.Request) *tmpldata.TemplateData {
+	return &tmpldata.TemplateData{
 		Flash: app.SessionManager.PopString(r.Context(), "flash"),
 	}
 }

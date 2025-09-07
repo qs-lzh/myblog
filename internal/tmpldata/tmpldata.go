@@ -1,4 +1,4 @@
-package data
+package tmpldata
 
 import (
 	"github.com/qs-lzh/myblog/internal/data"

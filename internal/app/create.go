@@ -2,6 +2,7 @@ package app
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -42,6 +43,11 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	if !createForm.Valid() {
 		app.render(w, "create", data)
 		return
+	}
+
+	err = app.TodoModel.Insert(createForm.Title, createForm.Content, time.Now())
+	if err != nil {
+		app.ErrorHandler.ServerError(w, err, "failed to insert into database")
 	}
 
 	http.Redirect(w, r, "/home", http.StatusSeeOther)

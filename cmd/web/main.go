@@ -21,20 +21,22 @@ func main() {
 	sessionManager := scs.New()
 	sessionManager.Lifetime = time.Hour * 5
 
+	dsn := flag.String("dsn", "web:mysql123..@unix(/tmp/mysql.sock)/todo?parseTime=true", "MYSQL data source name")
+
+	db, err := data.OpenDB(*dsn)
+	if err != nil {
+		logger.ErrLog.Fatal(err)
+	}
+	defer db.Close()
+
+	todoModel := data.TodoModel{DB: db}
+
 	app := &app.Application{
 		Logger:         logger,
 		ErrorHandler:   errorHandler,
 		SessionManager: sessionManager,
+		TodoModel:      todoModel,
 	}
-
-	dsn := flag.String("dsn", "web:mysql123..@unix(/tmp/mysql.sock)/snippetbox?parseTime=true", "MYSQL data source name")
-
-	db, err := data.OpenDB(*dsn)
-	if err != nil {
-		app.Logger.ErrLog.Fatal(err)
-	}
-
-	defer db.Close()
 
 	router := httprouter.New()
 

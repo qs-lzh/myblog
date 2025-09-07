@@ -22,5 +22,6 @@ func (model *TodoModel) Insert(title string, content string, dueDate time.Time) 
 	  values (?, ?, ?)
   `
 	_, err := model.DB.Exec(stmt, title, content, dueDate)
+
 	return err
 }
