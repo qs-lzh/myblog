@@ -12,6 +12,7 @@ func (app *Application) ShowHome(w http.ResponseWriter, r *http.Request, _ httpr
 	todos, err := app.TodoModel.GetAll()
 	if err != nil {
 		app.ErrorHandler.ServerError(w, err, "failed get all todos from database")
+		return
 	}
 
 	tmpldata := app.NewTemplateData(r)

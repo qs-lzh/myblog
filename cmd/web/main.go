@@ -41,8 +41,9 @@ func main() {
 	router := httprouter.New()
 
 	router.GET("/home", app.ShowHome)
-	router.GET("/create", app.Create)
-	router.POST("/create", app.CreatePost)
+	router.GET("/todo/create", app.Create)
+	router.POST("/todo/create", app.CreatePost)
+	router.POST("/todo/delete/:id", app.DeletePost)
 
 	router.ServeFiles("/static/*filepath", http.Dir("./static"))
 

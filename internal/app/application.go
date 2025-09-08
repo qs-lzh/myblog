@@ -43,6 +43,7 @@ func (app *Application) render(w http.ResponseWriter, page string, data any) {
 			templateSet, err = templateSet.ParseFiles(filePath)
 			if err != nil {
 				app.ErrorHandler.ServerError(w, err, fmt.Sprintf("failed to parse %s", filePath))
+				return
 			}
 		}
 	}

@@ -16,8 +16,6 @@ func (app *Application) Create(w http.ResponseWriter, r *http.Request, _ httprou
 	data := app.NewTemplateData(r)
 	data.Form = form.NewCreateForm()
 	app.render(w, "create", data)
-
-	app.Logger.LogRequest(r)
 }
 
 func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -51,9 +49,11 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	err = app.TodoModel.Insert(createForm.Title, createForm.Content, createForm.DueDate)
 	if err != nil {
 		app.ErrorHandler.ServerError(w, err, "failed to insert into database")
+		return
 	}
+
 	app.Logger.LogDBModify("Insert", "todos")
 	app.SessionManager.Put(r.Context(), "flash", "Todo created successfully!")
 
-	http.Redirect(w, r, "/create", http.StatusSeeOther)
+	http.Redirect(w, r, "/todo/create", http.StatusSeeOther)
 }

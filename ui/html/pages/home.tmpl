@@ -3,15 +3,15 @@
 <div class="todo-container" style="display: flex; flex-direction: column; gap: 16px; padding: 16px;">
 
   {{range .Todos}}
+
   <div class="todo-card" 
     style="border: 1px solid #ddd; border-radius: 8px; padding: 16px; 
     box-shadow: 0 2px 4px rgba(0,0,0,0.1); background-color: #fff; display: flex; 
-    justify-content: space-between; align-items: flex-start; align-items: center;"
+    justify-content: space-between; align-items: center;"
   >
     
     <!-- 左侧内容 -->
     <div style="flex: 1; margin-right: 16px;">
-
       <div style="font-size: 14px; color: red; font-weight: bold; margin-bottom: 8px;">
         Due: {{.DueDate.Format "2006-01-02"}}
       </div>
@@ -23,17 +23,19 @@
       <div style="font-size: 12px; color: #999;">
         Created: {{.CratedAt.Format "2006-01-02 15:04"}}
       </div>
-
     </div>
 
     <!-- 右侧按钮 -->
-    <div style="display: flex; align-items: flex-start;">
-      <button style="padding: 8px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
-      Finish
+    <form action="/todo/delete/{{.ID}}" method="POST" style="display:flex; align-items:center;">
+      <button type="submit" 
+              style="padding: 8px 12px; background-color: #e74c3c; 
+                    color: white; border: none; border-radius: 4px; cursor: pointer;">
+        Delete
       </button>
-    </div>
+    </form>
 
   </div>
+
   {{end}}
 
 </div>

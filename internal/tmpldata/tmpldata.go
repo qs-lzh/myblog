@@ -6,9 +6,8 @@ import (
 )
 
 type TemplateData struct {
-	Author string
-	Flash  string
-	Form   form.FormInterface
-	Todo   *data.Todo
-	Todos  []*data.Todo
+	Flash string
+	Form  form.FormInterface
+	Todo  *data.Todo
+	Todos []*data.Todo
 }

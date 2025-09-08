@@ -6,7 +6,7 @@ import (
 )
 
 type Todo struct {
-	Id       int
+	ID       int
 	Title    string
 	Content  string
 	CratedAt time.Time
@@ -40,7 +40,7 @@ func (model *TodoModel) GetAll() ([]*Todo, error) {
 	var todos []*Todo
 	for rows.Next() {
 		todo := &Todo{}
-		err = rows.Scan(&todo.Id, &todo.Title, &todo.Content, &todo.CratedAt, &todo.DueDate)
+		err = rows.Scan(&todo.ID, &todo.Title, &todo.Content, &todo.CratedAt, &todo.DueDate)
 		if err != nil {
 			return nil, err
 		}
@@ -48,4 +48,16 @@ func (model *TodoModel) GetAll() ([]*Todo, error) {
 	}
 
 	return todos, nil
+}
+
+func (model *TodoModel) Delete(id int) error {
+	stmt := `
+	  delete from todos where id = ?
+	`
+	_, err := model.DB.Exec(stmt, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
