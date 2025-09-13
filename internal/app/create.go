@@ -27,11 +27,10 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 		return
 	}
 
-	createForm := &form.CreateForm{
-		Title:   r.FormValue("title"),
-		Content: r.FormValue("content"),
-		DueDate: util.ParseDate(r.FormValue("date")),
-	}
+	createForm := form.NewCreateForm()
+	createForm.Title = r.FormValue("title")
+	createForm.Content = r.FormValue("content")
+	createForm.DueDate = util.ParseDate(r.FormValue("date"))
 
 	createForm.CheckField(createForm.NotBlank(createForm.Title), "title", "title field should not be blank!")
 	createForm.CheckField(createForm.MaxLength(createForm.Title, 255), "title", "title field shoule be no more than 255 runes!")
@@ -42,6 +41,7 @@ func (app *Application) CreatePost(w http.ResponseWriter, r *http.Request, _ htt
 	data.Form = createForm
 
 	if !createForm.Valid() {
+		app.ErrorHandler.UnProcessableEntity(w, "invalid input from user")
 		app.render(w, "create", data)
 		return
 	}

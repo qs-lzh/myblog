@@ -5,22 +5,55 @@ import (
 )
 
 type FormInterface interface {
-	GetValidator() *Validator
+	GetValidator() *validator
 }
 
 type CreateForm struct {
 	Title   string
 	Content string
 	DueDate time.Time
-	Validator
+	validator
 }
 
 func NewCreateForm() *CreateForm {
 	return &CreateForm{
-		Validator: *NewValidator(),
+		validator: *newValidator(),
 	}
 }
 
-func (form *CreateForm) GetValidator() *Validator {
-	return &form.Validator
+func (form *CreateForm) GetValidator() *validator {
+	return &form.validator
+}
+
+type SignupForm struct {
+	Email           string
+	Password        string
+	ConfirmPassword string
+	validator
+}
+
+func (form *SignupForm) GetValidator() *validator {
+	return &form.validator
+}
+
+func NewSignupForm() *SignupForm {
+	return &SignupForm{
+		validator: *newValidator(),
+	}
+}
+
+type LoginForm struct {
+	Email    string
+	Password string
+	validator
+}
+
+func (form *LoginForm) GetValidator() *validator {
+	return &form.validator
+}
+
+func NewLoginForm() *LoginForm {
+	return &LoginForm{
+		validator: *newValidator(),
+	}
 }

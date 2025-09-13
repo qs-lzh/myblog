@@ -6,8 +6,10 @@ import (
 )
 
 type TemplateData struct {
+	AA    int
 	Flash string
 	Form  form.FormInterface
 	Todo  *data.Todo
 	Todos []*data.Todo
+	User  data.User
 }

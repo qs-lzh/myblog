@@ -44,6 +44,11 @@ func main() {
 	router.GET("/todo/create", app.Create)
 	router.POST("/todo/create", app.CreatePost)
 	router.POST("/todo/delete/:id", app.DeletePost)
+	router.GET("/user", app.ShowUser)
+	router.GET("/user/signup", app.UserSignup)
+	router.POST("/user/signup", app.UserSignupPost)
+	router.GET("/user/login", app.UserLogin)
+	router.POST("/user/login", app.UserLoginPost)
 
 	router.ServeFiles("/static/*filepath", http.Dir("./static"))
 

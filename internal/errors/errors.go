@@ -51,3 +51,10 @@ func (h *ErrorHandler) Unauthorized(w http.ResponseWriter, msg string) {
 	}
 	h.ClientError(w, http.StatusUnauthorized, msg)
 }
+
+func (h *ErrorHandler) UnProcessableEntity(w http.ResponseWriter, msg string) {
+	if msg == "" {
+		msg = "Unprocessable Entity"
+	}
+	h.ClientError(w, http.StatusUnprocessableEntity, msg)
+}
